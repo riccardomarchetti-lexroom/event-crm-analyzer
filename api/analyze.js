@@ -94,7 +94,7 @@ async function fetchDealsForContact(contactId) {
   }
 
   const assocData = await assocRes.json();
-  const dealIds = (assocData.results || []).map((r) => r.id || r.toObjectId);
+  const dealIds = (assocData.results || []).map((r) => r.toObjectId);
 
   if (dealIds.length === 0) return [];
 
@@ -167,7 +167,7 @@ async function searchBatch(emails) {
  */
 export default async function handler(req, res) {
   // CORS headers — required for requests from the Vite dev server and Vercel preview URLs.
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN || "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -180,7 +180,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { emails = [], names = {} } = req.body || {};
+  const { emails = [] } = req.body || {};
 
   if (!Array.isArray(emails) || emails.length === 0) {
     return res.status(400).json({ error: "emails must be a non-empty array" });
