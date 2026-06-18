@@ -9,6 +9,7 @@ const C = {
   RED:   '#C03930',
   WHITE: '#FFFFFF',
   LIGHT_BLUE: '#F0F5FF',
+  MUTED: C.MUTED,
   FONT:  "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
 }
 
@@ -248,6 +249,10 @@ export default function Uploader({ onStart }) {
     const data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' })
 
     if (!data || data.length === 0) {
+      setHeaders([])
+      setRows([])
+      setEmailCol('')
+      setNameCol('')
       setParseError('Il foglio selezionato è vuoto.')
       return
     }
@@ -307,7 +312,10 @@ export default function Uploader({ onStart }) {
   // ── Drag & drop handlers ─────────────────────────────────────────────────────
 
   const onDragOver  = useCallback((e) => { e.preventDefault(); setIsDragging(true)  }, [])
-  const onDragLeave = useCallback(()  => { setIsDragging(false) }, [])
+  const onDragLeave = useCallback((e) => {
+    if (e.currentTarget.contains(e.relatedTarget)) return
+    setIsDragging(false)
+  }, [])
   const onDrop      = useCallback((e) => {
     e.preventDefault()
     setIsDragging(false)
@@ -366,7 +374,7 @@ export default function Uploader({ onStart }) {
           <div style={S.headerRow}>
             <div>
               <h1 style={S.h1}>Event CRM Analyzer</h1>
-              <p style={{ ...S.body, color: '#6B7280', margin: 0 }}>
+              <p style={{ ...S.body, color: C.MUTED, margin: 0 }}>
                 Carica la lista partecipanti per iniziare
               </p>
             </div>
@@ -388,7 +396,7 @@ export default function Uploader({ onStart }) {
             <span style={S.dropIcon}>📂</span>
             <span style={S.h2}>Trascina qui il tuo file</span>
             <span style={S.dropSubtext}>.xlsx · .xls · .csv</span>
-            <span style={{ ...S.body, color: '#6B7280', marginTop: '4px' }}>
+            <span style={{ ...S.body, color: C.MUTED, marginTop: '4px' }}>
               oppure clicca per sfogliare
             </span>
           </div>
@@ -419,7 +427,7 @@ export default function Uploader({ onStart }) {
         <div style={S.headerRow}>
           <div>
             <h1 style={S.h1}>Configura l'analisi</h1>
-            <p style={{ ...S.body, color: '#6B7280', margin: 0 }}>
+            <p style={{ ...S.body, color: C.MUTED, margin: 0 }}>
               {rows.length} righe caricate
             </p>
           </div>
@@ -497,7 +505,7 @@ export default function Uploader({ onStart }) {
         </div>
 
         <div style={S.fieldGroup}>
-          <label style={S.label}>Colonna Nome <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, fontSize: '11px', color: '#6B7280' }}>(opzionale)</span></label>
+          <label style={S.label}>Colonna Nome <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, fontSize: '11px', color: C.MUTED }}>(opzionale)</span></label>
           <select
             style={S.select}
             value={nameCol}
