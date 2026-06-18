@@ -1,5 +1,1 @@
-{
-  "env": {
-    "HUBSPOT_API_KEY": "@hubspot_api_key"
-  }
-}
+{}
