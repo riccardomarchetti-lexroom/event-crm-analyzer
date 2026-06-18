@@ -94,7 +94,7 @@ async function fetchDealsForContact(contactId) {
   }
 
   const assocData = await assocRes.json();
-  const dealIds = (assocData.results || []).map((r) => r.toObjectId);
+  const dealIds = (assocData.results || []).map((r) => r.id || r.toObjectId).filter(Boolean);
 
   if (dealIds.length === 0) return [];
 
