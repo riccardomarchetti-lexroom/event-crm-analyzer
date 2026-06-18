@@ -29,6 +29,9 @@ const STAGE_LABELS = {
   'appointmentscheduled': 'New – Demo',
   '1285033187':      '[RENEWAL] done',
   '1698921674':      '[UPSELL] Closed Lost',
+  "qualifiedtobuy":          "Qualified to Buy",
+  "presentationscheduled":   "Presentazione Schedulata",
+  "decisionmakerboughtin":   "Decision Maker – Convinzione",
 };
 
 function segment(contact) {
@@ -92,7 +95,7 @@ function generateExcel(contacts, eventName, eventDate, filename) {
     return [
       c.firstname || '',          // A: First Name
       c.lastname || '',           // B: Last Name
-      c.email,                    // C: Email
+      c.email || '',              // C: Email
       '',                         // D: Phone Number (empty)
       eventName,                  // E: Event Name
       eventDate || '',            // F: Event Date
@@ -142,17 +145,19 @@ export default function App() {
     const BATCH_SIZE = 50;
     const totalBatches = Math.ceil(emails.length / BATCH_SIZE);
 
-    const logs = [`▶ Analisi avviata — ${emails.length} email, ${totalBatches} batch`];
-    setLogs([...logs]);
+    const logLines = [`▶ Analisi avviata — ${emails.length} email, ${totalBatches} batch`];
+    setLogs([...logLines]);
     setProgress({ current: 0, total: totalBatches });
 
     let simulatedBatch = 0;
     const progressInterval = setInterval(() => {
       simulatedBatch++;
       if (simulatedBatch < totalBatches) {
-        logs.push(`✓ Batch ${simulatedBatch}/${totalBatches} completato`);
-        setLogs([...logs]);
+        logLines.push(`✓ Batch ${simulatedBatch}/${totalBatches} completato`);
+        setLogs([...logLines]);
         setProgress({ current: simulatedBatch, total: totalBatches });
+      } else {
+        clearInterval(progressInterval);
       }
     }, 400);
 
@@ -172,9 +177,9 @@ export default function App() {
 
       const data = await response.json();
 
-      logs.push(`✓ Batch ${totalBatches}/${totalBatches} completato`);
-      logs.push(`✅ Analisi completata — ${data.contacts.length} trovati, ${data.not_found.length} non nel CRM`);
-      setLogs([...logs]);
+      logLines.push(`✓ Batch ${totalBatches}/${totalBatches} completato`);
+      logLines.push(`✅ Analisi completata — ${data.contacts.length} trovati, ${data.not_found.length} non nel CRM`);
+      setLogs([...logLines]);
       setProgress({ current: totalBatches, total: totalBatches });
 
       const segmented = data.contacts.map(c => ({
@@ -191,15 +196,15 @@ export default function App() {
         })),
       ];
 
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 600)); // brief pause so user sees final log before results appear
 
       setContacts(allContacts);
       setStep('results');
 
     } catch (err) {
       clearInterval(progressInterval);
-      logs.push(`❌ Errore: ${err.message}`);
-      setLogs([...logs]);
+      logLines.push(`❌ Errore: ${err.message}`);
+      setLogs([...logLines]);
       setError(err.message);
     }
   }
