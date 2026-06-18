@@ -28,7 +28,7 @@ const styles = {
     letterSpacing: '0.4px',
   },
   progressTrack: {
-    backgroundColor: '#3A3D47',
+    backgroundColor: '#E4E4E4',
     height: '6px',
     borderRadius: '3px',
     overflow: 'hidden',
