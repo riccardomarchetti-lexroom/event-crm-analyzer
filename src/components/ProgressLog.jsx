@@ -5,16 +5,22 @@ import { useEffect, useRef } from 'react';
 //   progress: { current: number, total: number }
 //   logs: string[]
 
+const palette = {
+  BLUE: '#0F4C9D',
+  GRAY: '#E4E4E4',
+  DARK: '#1C1F27',
+};
+
 const styles = {
   container: {
-    backgroundColor: '#1C1F27',
+    backgroundColor: palette.DARK,
     borderRadius: '10px',
     padding: '20px',
     maxHeight: '300px',
     overflowY: 'auto',
     fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
     fontSize: '12px',
-    color: '#E4E4E4',
+    color: palette.GRAY,
   },
   progressWrapper: {
     marginBottom: '16px',
@@ -24,17 +30,17 @@ const styles = {
     justifyContent: 'space-between',
     marginBottom: '6px',
     fontSize: '11px',
-    color: '#E4E4E4',
+    color: palette.GRAY,
     letterSpacing: '0.4px',
   },
   progressTrack: {
-    backgroundColor: '#E4E4E4',
+    backgroundColor: palette.GRAY,
     height: '6px',
     borderRadius: '3px',
     overflow: 'hidden',
   },
   progressFill: (pct) => ({
-    backgroundColor: '#0F4C9D',
+    backgroundColor: palette.BLUE,
     height: '100%',
     borderRadius: '3px',
     width: `${pct}%`,
