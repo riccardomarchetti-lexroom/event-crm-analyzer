@@ -255,8 +255,5 @@ export default async function handler(req, res) {
   // Emails that were submitted but returned no HubSpot contact
   const not_found = normalisedEmails.filter((e) => !foundEmails.has(e));
 
-  const response = { contacts, not_found };
-  if (errors.length > 0) response.errors = errors;
-
-  return res.status(200).json(response);
+  return res.status(200).json({ contacts, not_found, errors });
 }
