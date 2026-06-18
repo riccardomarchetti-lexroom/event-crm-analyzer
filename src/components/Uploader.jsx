@@ -9,7 +9,7 @@ const C = {
   RED:   '#C03930',
   WHITE: '#FFFFFF',
   LIGHT_BLUE: '#F0F5FF',
-  MUTED: C.MUTED,
+  MUTED: '#6B7280',
   FONT:  "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
 }
 
